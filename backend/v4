@@ -98,7 +98,7 @@ def parse(url):
     print(json.loads(data))
     with open ('data.json', 'w') as file:
         json.dump(data, file, indent=3)
-@app.route('/api', methods=['GET']) #curl -i http://localhost:5000/todo/api/v1.0/data
+@app.route('/api', methods=['GET']) #curl -i http://localhost:5000/api
 def get_tasks():
     return jsonify({'data': week})
 
