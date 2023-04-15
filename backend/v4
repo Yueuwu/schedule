@@ -1,0 +1,113 @@
+from typing import Text
+import requests
+import lxml.html
+import json
+from flask import Flask, jsonify
+app = Flask(__name__)
+
+def parse_room(url):
+    global request_counter,  all_requests
+    api = requests.get('https://schedule.nspu.ru/'+url)
+
+    request_counter+=1
+    all_requests.append('https://schedule.nspu.ru/'+url)
+
+    tree = lxml.html.document_fromstring(api.text)
+    text_original = tree.xpath('//*[@id="center"]/div/div[1]/h2/text()')
+    x = text_original[0].find("Корпус 1")
+    if x!=-1:
+        return('Корпус 1 (Главный)')
+    else:
+        x = text_original[0].find("Корпус 3")
+        if x!=-1:
+            return('Корпус 3 (ИФМИТО-ФФК-ИФМИП)')
+        else:
+            return('NULL')
+
+def parse(url):
+    global request_counter,  all_requests
+    api = requests.get(url)
+
+    request_counter+=1 #counter
+    all_requests.append(url)
+
+    tree = lxml.html.document_fromstring(api.text)
+    td = ['color', 'color1', 'self', 'today']
+
+    text_original = []
+    for e in td:
+        f = f'//*[@id="{e}"]/text()[1]'
+        text_original += tree.xpath(f)
+
+    teacher = []
+    for e in td:
+        f = f'//*[@id="{e}"]/a[1]/text()'
+        teacher += tree.xpath(f)
+
+    teacherLink = []
+    for e in td:
+        f = f'//*[@id="{e}"]/a[1]/@href'
+        teacherLink += tree.xpath(f)
+
+    classroom = []
+    for e in td:
+        f = f'//*[@id="{e}"]/a[2]/text()'
+        classroom += tree.xpath(f)
+    
+    classroomLink = []
+    for e in td:
+        f = f'//*[@id="{e}"]/a[2]/@href'
+        classroomLink += tree.xpath(f)
+    
+    format = []
+    for e in td:
+        f = f'//*[@id="{e}"]/text()[3]'
+        format += tree.xpath(f)
+    
+    day = ['Понедельник ', 'Вторник ', 'Среда ', 'Четверг ','Пятница ','Суббота ']
+    time  = ['8:30-10:00','10:10-11:40','12:10-13:40','14:10-15:40','15:50-17:20','17:30-19:00','19:10-20:40','20:50-22:20']
+    global object, week
+    attributes = {}
+    week = []
+    object = {"object": []} #one day
+    days_to_rename = {'Понедельник ':'Monday', 'Вторник ': 'Tuesday', 'Среда ':'Wednesday', 'Четверг ':'Thursday','Пятница ':'Friday','Суббота ':'Saturday'}
+    counter = -1 #counter for all text [find line]
+    counter_add = 0 #counter for one time [find information]
+    for i in text_original:
+        counter+=1
+        for j in day:
+            if i==j:
+                day_i = days_to_rename[i] #day of week for find in time
+                object = {"object": []}
+                object["day"] = day_i
+                week.append(object.copy())
+                # attributes.clear()
+        for j in time:
+            if i==j:
+                attributes["time"] = i
+                attributes["subject"] = text_original[counter+1][:-1]
+                attributes['teacher'] = teacher[counter_add]
+                attributes['teacherLink'] = "schedule.nspu.ru/"+teacherLink[counter_add]
+                attributes['classroom'] = classroom[counter_add][:-2]
+                attributes['classroomLink'] = "schedule.nspu.ru/"+classroomLink[counter_add]
+                attributes['building '] = parse_room(classroomLink[counter_add])
+                attributes['format'] = format[counter_add][1:-2]
+                object["object"].append(attributes.copy())
+                counter_add+=1
+    data = json.dumps(week, indent=3)
+    print(json.loads(data))
+    with open ('data.json', 'w') as file:
+        json.dump(data, file, indent=3)
+@app.route('/api', methods=['GET']) #curl -i http://localhost:5000/todo/api/v1.0/data
+def get_tasks():
+    return jsonify({'data': week})
+
+if __name__ == '__main__':
+
+    request_counter = 0
+    all_requests = []
+
+    url = "https://schedule.nspu.ru/group_shedule.php?id=1889"
+    parse(url)
+    print("\nTotal Requests = ",request_counter,"\nlinks = ", all_requests)
+    app.run(debug=True)
