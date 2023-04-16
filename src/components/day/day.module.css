@@ -1,0 +1,19 @@
+.wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+.day{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5vmin;
+    background-color: #65737e;
+    width: 15vmin;
+    border-radius: 10px;
+    font-size: 2.2vmin;
+}
+.lessons{
+    width: 80%;
+}
