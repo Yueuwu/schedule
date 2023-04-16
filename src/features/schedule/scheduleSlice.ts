@@ -16,7 +16,7 @@ interface stateInterface {
 }
 
 const initialState: stateInterface = {
-    value: {},
+    value: [],
     status: 'loading'
 }
 
@@ -33,7 +33,6 @@ const scheduleSlice = createSlice({
         builder.addCase(getSchedule.fulfilled, (state, action) => {
                 state.status = 'success';
                 state.value = action.payload
-
             })
         builder.addCase(getSchedule.rejected, (state) => {
                 state.status = 'failed';
