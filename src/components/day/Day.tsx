@@ -1,6 +1,7 @@
 import React from 'react';
 import Lesson from "../lesson/Lesson";
 import style from './day.module.css'
+import ChillDay from "../ChillDay/ChillDay";
 
 const Day: React.FC<{day: any}> = ({day}) => {
     const dayChanger = (day: any) => {
@@ -19,7 +20,13 @@ const Day: React.FC<{day: any}> = ({day}) => {
                 <p>{dayChanger(day.day)}</p>
             </div>
             <div className={style.lessons}>
-                {day.object.map((lesson: any) => <Lesson lesson={lesson}/>)}
+                {
+                    day.object.length
+                        ?
+                        day.object.map((lesson: any) => <Lesson lesson={lesson}/>)
+                        :
+                        <ChillDay/>
+                }
             </div>
         </div>
     );

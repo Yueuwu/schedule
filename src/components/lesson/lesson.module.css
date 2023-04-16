@@ -1,9 +1,51 @@
 .wrapper{
     display: flex;
+    justify-content: space-between;
+    margin-bottom: 1vmin;
+    word-break: break-word;
 }
 .subject{
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2vmin;
+    background-color: #65737e;
+    border-radius: 6px;
+    font-size: 2vmin;
+    width: 70%;
+    word-break: break-word;
+}
+.sub{
+    display: flex;
+    justify-content: end;
+}
+.sub p{
+    margin-left: 5px;
 }
 .time{
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vmin;
+    background-color: #65737e;
+    border-radius: 6px;
+    font-size: 1.8vmin;
+}
+.teacher{
+    cursor: pointer;
+}
+.auditorium{
+    cursor: pointer;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2vmin;
+    background-color: #65737e;
+    border-radius: 6px;
+    font-size: 1.8vmin;
+}
+.auditorium p{
+    margin-bottom: 2px;
 }
