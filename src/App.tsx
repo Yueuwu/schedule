@@ -12,9 +12,15 @@ function App() {
   const {value, status} = useAppSelector(scheduleSelector)
   return (
     <div className="App">
-      {
-        value["Понедельник "] && <Day props={value["Понедельник "]}/>
-      }
+      <div className="AppWrapper">
+        {
+          status === 'success'
+              ?
+              value.map((day: any) => <Day day={day}/>)
+              :
+              <div>Лоадинг</div>
+        }
+      </div>
     </div>
   );
 }
