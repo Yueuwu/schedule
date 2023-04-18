@@ -9,7 +9,7 @@ const Day: React.FC<valueI> = ({day, object}) => {
     const {currentDay} = useAppSelector(scheduleSelector)
 
     const currDayStyle = () => {
-        if (day === 'Wednesday'){
+        if (day === currentDay){
             return {backgroundColor: '#7289d9'}
         }
     }
