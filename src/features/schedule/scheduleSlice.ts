@@ -9,14 +9,41 @@ export const getSchedule = createAsyncThunk(
     }
 )
 
+export enum weekOrder {
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday
+}
+
+export type objectT = {
+    "building ": string,
+    classroom: string,
+    classroomLink: string,
+    format: string,
+    subject: string,
+    teacher: string,
+    teacherLink: string,
+    time: string
+}
+
+export interface valueI {
+    day: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
+    object: objectT[]
+}
 
 interface stateInterface {
-    value: any,
+    value: valueI[],
+    currentDay: 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
     status: 'loading' | 'success' | 'failed'
 }
 
 const initialState: stateInterface = {
     value: [],
+    currentDay: 'Sunday',
     status: 'loading'
 }
 
@@ -28,13 +55,17 @@ const scheduleSlice = createSlice({
         builder
             .addCase(getSchedule.pending, (state) => {
                 state.status = 'loading';
-
             })
-        builder.addCase(getSchedule.fulfilled, (state, action) => {
+            .addCase(getSchedule.fulfilled, (state, action) => {
                 state.status = 'success';
-                state.value = action.payload
+                state.value = action.payload.sort((a: valueI, b: valueI) => {
+                    let day1 = a.day
+                    let day2 = b.day
+                    return weekOrder[day1] - weekOrder[day2]
+                })
+                state.currentDay = weekOrder[new Date().getDay()] as stateInterface['currentDay']
             })
-        builder.addCase(getSchedule.rejected, (state) => {
+            .addCase(getSchedule.rejected, (state) => {
                 state.status = 'failed';
             });
     }

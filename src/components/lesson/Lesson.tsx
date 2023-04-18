@@ -1,7 +1,8 @@
 import React from 'react';
 import style from './lesson.module.css'
+import {objectT} from "../../features/schedule/scheduleSlice";
 
-const Lesson: React.FC<{lesson: any}> = ({lesson}) => {
+const Lesson: React.FC<{lesson: objectT}> = ({lesson}) => {
     const textHandler = (text: string, max?: number): string => {
         let maxLength = 53
         if (max){
