@@ -2,9 +2,19 @@ import React from 'react';
 import Lesson from "../lesson/Lesson";
 import style from './day.module.css'
 import ChillDay from "../ChillDay/ChillDay";
+import {objectT, scheduleSelector, valueI} from "../../features/schedule/scheduleSlice";
+import {useAppSelector} from "../../app/hooks";
 
-const Day: React.FC<{day: any}> = ({day}) => {
-    const dayChanger = (day: any) => {
+const Day: React.FC<valueI> = ({day, object}) => {
+    const {currentDay} = useAppSelector(scheduleSelector)
+
+    const currDayStyle = () => {
+        if (day === 'Wednesday'){
+            return {backgroundColor: '#7289d9'}
+        }
+    }
+
+    const dayChanger = (day: valueI['day']) => {
         switch (day) {
             case "Monday": return "Понедельник";
             case "Tuesday": return "Вторник";
@@ -14,16 +24,17 @@ const Day: React.FC<{day: any}> = ({day}) => {
             case "Saturday": return "Суббота";
         }
     }
+
     return (
         <div className={style.wrapper}>
-            <div className={style.day}>
-                <p>{dayChanger(day.day)}</p>
+            <div style={currDayStyle()} className={style.day}>
+                <p>{dayChanger(day)}</p>
             </div>
             <div className={style.lessons}>
                 {
-                    day.object.length
+                    object.length
                         ?
-                        day.object.map((lesson: any) => <Lesson lesson={lesson}/>)
+                        object.map((lesson: objectT, index) => <Lesson key={index} lesson={lesson}/>)
                         :
                         <ChillDay/>
                 }
