@@ -32,9 +32,13 @@ const Day: React.FC<valueI> = ({day, object}) => {
             </div>
             <div className={style.lessons}>
                 {
-                    object.length
+                    object.length // lessons exists?
                         ?
-                        object.map((lesson: objectT, index) => <Lesson key={index} lesson={lesson}/>)
+                        day === currentDay // lessons in current day?
+                            ?
+                            object.map((lesson: objectT, index) => <Lesson key={index} lesson={lesson} isCurrentDay={true}/>)
+                            :
+                            object.map((lesson: objectT, index) => <Lesson key={index} lesson={lesson} isCurrentDay={false}/>)
                         :
                         <ChillDay/>
                 }
