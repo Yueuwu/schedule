@@ -26,7 +26,8 @@ const Lesson: React.FC<lessonI> = ({lesson, isCurrentDay}) => {
         }
         return text
     }
-    const goTo = (link: string) => {
+    const goTo = (link: string, e: any) => {
+        e.stopPropagation()
         window.location.assign('https://' + link)
     }
     return (
@@ -37,11 +38,11 @@ const Lesson: React.FC<lessonI> = ({lesson, isCurrentDay}) => {
             <div style={currDayStyle()} className={style.subject}>
                 <p>{textHandler(lesson.subject)}</p>
                 <div className={style.sub}>
-                    <p className={style.teacher} onClick={() => goTo(lesson.teacherLink)}>{lesson.teacher}</p>
+                    <p className={style.teacher} onClick={(e) => goTo(lesson.teacherLink, e)}>{lesson.teacher}</p>
                     <p>{lesson.format}</p>
                 </div>
             </div>
-            <div style={currDayStyle()} onClick={() => goTo(lesson.classroomLink)} className={style.auditorium}>
+            <div style={currDayStyle()} onClick={(e) => goTo(lesson.classroomLink, e)} className={style.auditorium}>
                 <p>{lesson['building '] !== 'NULL' ? textHandler(lesson['building '], 10) : ''}</p>
                 <p>{lesson.classroom}</p>
             </div>

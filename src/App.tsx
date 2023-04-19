@@ -1,10 +1,17 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {useAppDispatch, useAppSelector} from "./app/hooks";
 import {getSchedule, scheduleSelector, valueI} from "./features/schedule/scheduleSlice";
 import Day from "./components/day/Day";
+import PopUp from "./components/Day pop up/PopUp";
 
 const App: React.FC = () => {
+
+    const [showPopUp, setShowPopUp] = useState(false)
+
+    const popupVisibility = () => {
+        setShowPopUp(!showPopUp)
+    }
 
     const dispatch = useAppDispatch()
     useEffect(() => {
@@ -18,9 +25,12 @@ const App: React.FC = () => {
                 {
                     status === 'success'
                         ?
-                        value.map((day: valueI, index) => <Day key={index} day={day['day']} object={day['object']}/>)
+                        value.map((day: valueI, index) => <Day showPopUp={popupVisibility} key={index} day={day['day']} object={day['object']}/>)
                         :
                         <div>Лоадинг</div>
+                }
+                {
+                    showPopUp && <PopUp changeVisibility={popupVisibility} />
                 }
             </div>
         </div>

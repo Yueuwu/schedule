@@ -5,7 +5,11 @@ import ChillDay from "../ChillDay/ChillDay";
 import {objectT, scheduleSelector, valueI} from "../../features/schedule/scheduleSlice";
 import {useAppSelector} from "../../app/hooks";
 
-const Day: React.FC<valueI> = ({day, object}) => {
+interface dayI extends valueI {
+    showPopUp: () => void
+}
+
+const Day: React.FC<dayI> = ({day, object, showPopUp}) => {
     const {currentDay} = useAppSelector(scheduleSelector)
 
     const currDayStyle = () => {
@@ -26,7 +30,7 @@ const Day: React.FC<valueI> = ({day, object}) => {
     }
 
     return (
-        <div className={style.wrapper}>
+        <div onClick={(e) => {showPopUp()} } className={style.wrapper}>
             <div style={currDayStyle()} className={style.day}>
                 <p>{dayChanger(day)}</p>
             </div>
