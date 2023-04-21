@@ -6,14 +6,24 @@ import {objectT, scheduleSelector, valueI} from "../../features/schedule/schedul
 import {useAppSelector} from "../../app/hooks";
 
 interface dayI extends valueI {
-    showPopUp: () => void
+    showPopUp: () => void,
+    setPickedDayPopUp: (day: "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday") => void
 }
 
-const Day: React.FC<dayI> = ({day, object, showPopUp}) => {
+const Day: React.FC<dayI> = ({day, object, showPopUp, setPickedDayPopUp}) => {
     const {currentDay} = useAppSelector(scheduleSelector)
 
+    const isCurrentDay = day === currentDay
+
+
+    const showPopUpHandler = () => {
+        showPopUp()
+        setPickedDayPopUp(day)
+    }
+
+
     const currDayStyle = () => {
-        if (day === currentDay){
+        if (isCurrentDay){
             return {backgroundColor: '#7289d9'}
         }
     }
@@ -30,7 +40,7 @@ const Day: React.FC<dayI> = ({day, object, showPopUp}) => {
     }
 
     return (
-        <div onClick={(e) => {showPopUp()} } className={style.wrapper}>
+        <div onClick={showPopUpHandler} className={style.wrapper}>
             <div style={currDayStyle()} className={style.day}>
                 <p>{dayChanger(day)}</p>
             </div>
@@ -38,11 +48,8 @@ const Day: React.FC<dayI> = ({day, object, showPopUp}) => {
                 {
                     object.length // lessons exists?
                         ?
-                        day === currentDay // lessons in current day?
-                            ?
-                            object.map((lesson: objectT, index) => <Lesson key={index} lesson={lesson} isCurrentDay={true}/>)
-                            :
-                            object.map((lesson: objectT, index) => <Lesson key={index} lesson={lesson} isCurrentDay={false}/>)
+                        object.map((lesson: objectT, index) => <Lesson key={index} lesson={lesson}
+                                                                       isCurrentDay={isCurrentDay}/>)
                         :
                         <ChillDay/>
                 }

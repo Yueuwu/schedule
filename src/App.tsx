@@ -8,9 +8,17 @@ import PopUp from "./components/Day pop up/PopUp";
 const App: React.FC = () => {
 
     const [showPopUp, setShowPopUp] = useState(false)
+    const [pickedDayPopUp, setPickedDayPopUp] = useState<valueI['day']>('Monday')
 
     const popupVisibility = () => {
         setShowPopUp(!showPopUp)
+    }
+
+    const closePopUpOutside = (e: React.MouseEvent) => {
+        if (showPopUp) {
+            e.stopPropagation()
+            setShowPopUp(false)
+        }
     }
 
     const dispatch = useAppDispatch()
@@ -20,17 +28,18 @@ const App: React.FC = () => {
     const {value, status} = useAppSelector(scheduleSelector)
 
     return (
-        <div className="App">
+        /*onClick={(e)=>closePopUpOutside(e)}*/
+        <div  className="App">
             <div className="AppWrapper">
                 {
                     status === 'success'
                         ?
-                        value.map((day: valueI, index) => <Day showPopUp={popupVisibility} key={index} day={day['day']} object={day['object']}/>)
+                        value.map((day: valueI, index) => <Day setPickedDayPopUp={setPickedDayPopUp} showPopUp={popupVisibility} key={index} day={day['day']} object={day['object']}/>)
                         :
                         <div>Лоадинг</div>
                 }
                 {
-                    showPopUp && <PopUp changeVisibility={popupVisibility} />
+                    showPopUp && <PopUp pickedDay={pickedDayPopUp} changeVisibility={popupVisibility} />
                 }
             </div>
         </div>
