@@ -4,7 +4,29 @@
     top: 5vh;
     left: 5vw;
 
-    background-color: #ff0000;
+    background-color: #59599b;
+    opacity: 93%;
     width: 90vw;
     height: 80vh;
+    padding: 1vmin;
+}
+.close {
+    position: absolute;
+    margin: 1vmin;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 40px;
+    height: 40px;
+    --weight: 3px;
+    --aa: 1px; /* anti-aliasing */
+    --color: #ffffff;
+    border-radius: 3px;
+    background:
+            linear-gradient(45deg, transparent calc(50% - var(--weight) - var(--aa)), var(--color) calc(50% - var(--weight)), var(--color) calc(50% + var(--weight)), transparent calc(50% + var(--weight) + var(--aa))),
+            linear-gradient(-45deg, transparent calc(50% - var(--weight) - var(--aa)), var(--color) calc(50% - var(--weight)), var(--color) calc(50% + var(--weight)), transparent calc(50% + var(--weight) + var(--aa)));
+}
+.dayName{
+    font-size: 25px;
 }

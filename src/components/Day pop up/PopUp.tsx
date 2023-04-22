@@ -7,45 +7,70 @@ interface popUpI {
     pickedDay: valueI['day']
 }
 
-type dataT = {
+type noteT = {
     text: string,
     date: string
 }
-interface dataList {
-    data: dataT[]
-}
+type dataList = noteT[]
+
 
 const PopUp: React.FC<popUpI> = ({changeVisibility, pickedDay}) => {
 
-    const [noteText, setNoteText] = useState('')
+    const [notes, setNotes] = useState<dataList>([{text: '', date: ''}])
+    const [noteForSaving, setNoteForSaving] = useState<noteT>({text: '', date: ''})
+
+    const readLocalStorage = () => {
+        let rawData: string | null = localStorage.getItem(`${pickedDay}`)
+        return rawData ? JSON.parse(rawData) : []
+    }
 
     useEffect(() => {
-        let rawData: string | null = localStorage.getItem(`${pickedDay}`)
-        let data: dataT = rawData ? JSON.parse(rawData) : {text: ''}
-        setNoteText(data.text)
-    }, [])
+        let data = readLocalStorage()
+        if (!data.length){
+            data = [{text: '', date: ''}]
+        }
+        setNotes(data)
+    }, [noteForSaving])
 
-    const saveNote = (text: any) => {
-        const data: dataT = {
+    const createNote = (text: any) => {
+        const note: noteT = {
             text: text.target.value,
             date: Date()
         }
+        setNoteForSaving(note)
+    }
+
+    const saveNote = () => {
+        let data = readLocalStorage()
+        if (noteForSaving.text){
+            data.push(noteForSaving)
+        }
+        if (data.length > 5){
+            data.shift()
+        }
         const json = JSON.stringify(data)
         localStorage.setItem(`${pickedDay}`, json)
+        setNoteForSaving({text: '', date: ''})
     }
 
     return (
         <div className={style.wrapper}>
-            <div>
-                {pickedDay} {noteText}
+            <div className={style.dayName}>
+                {pickedDay}
             </div>
-            <div onClick={changeVisibility}>
-                Закрыть
+            <div className={style.close} onClick={changeVisibility}>
             </div>
             <div>
-                <input onChange={event => saveNote(event)}>
-
+                <input onChange={event => createNote(event)} value={noteForSaving.text}>
                 </input>
+            </div>
+            <div>
+                <button onClick={saveNote}>Сохранить</button>
+            </div>
+            <div>
+                {
+                    notes.map(e => <div>{e.text}{e.date}</div>)
+                }
             </div>
         </div>
     );
