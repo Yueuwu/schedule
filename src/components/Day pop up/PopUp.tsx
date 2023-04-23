@@ -1,6 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './popup.module.css'
 import {valueI} from "../../features/schedule/scheduleSlice";
+import Note from "./note/Note";
 
 interface popUpI {
     changeVisibility: () => void
@@ -60,16 +61,20 @@ const PopUp: React.FC<popUpI> = ({changeVisibility, pickedDay}) => {
             </div>
             <div className={style.close} onClick={changeVisibility}>
             </div>
-            <div>
-                <input onChange={event => createNote(event)} value={noteForSaving.text}>
-                </input>
+            <div className={style.inputWrap}>
+                <textarea
+                    placeholder='Введите заметку'
+                    className={style.input}
+                    onChange={event => createNote(event)}
+                    value={noteForSaving.text}>
+                </textarea>
             </div>
-            <div>
-                <button onClick={saveNote}>Сохранить</button>
+            <div className={style.inputWrap}>
+                <button className={style.btn} onClick={saveNote}>Сохранить</button>
             </div>
-            <div>
+            <div className={style.notesWrap}>
                 {
-                    notes.map(e => <div>{e.text}{e.date}</div>)
+                    notes.map((note, index) => <Note key={index} text={note.text} date={note.date}/>)
                 }
             </div>
         </div>

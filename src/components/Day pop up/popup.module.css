@@ -9,6 +9,7 @@
     width: 90vw;
     height: 80vh;
     padding: 1vmin;
+    border-radius: 7px;
 }
 .close {
     position: absolute;
@@ -29,4 +30,38 @@
 }
 .dayName{
     font-size: 25px;
+}
+.inputWrap{
+    margin: 2vmin 0 1vmin 1vmin;
+}
+.input{
+    height: 7vh;
+    width: 15vw;
+    resize: none;
+    padding: 0.5vmin;
+    font-size: 15px;
+    border-radius: 5px;
+}
+.input:focus{
+    box-shadow: 0 0 10px 2px rgba(154, 234, 230, 0.45);
+}
+.btn{
+    padding: 1vmin;
+    border-radius: 5px;
+    background-color: #cdcdde;
+}
+.btn:hover{
+    background-color: #ffffff;
+}
+.notesWrap{
+    display: flex;
+    flex-wrap: wrap;
+
+    margin: 2vmin 0 1vmin 1vmin;
+
+}
+@media (max-width: 550px) {
+    .input {
+        width: 30vw;
+    }
 }
