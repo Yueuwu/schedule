@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import style from './popup.module.css'
 import {valueI} from "../../features/schedule/scheduleSlice";
 import Note from "./note/Note";
+import {dayChanger} from "../../utils/dayChanger";
 
 interface popUpI {
     changeVisibility: () => void
@@ -57,7 +58,7 @@ const PopUp: React.FC<popUpI> = ({changeVisibility, pickedDay}) => {
     return (
         <div className={style.wrapper}>
             <div className={style.dayName}>
-                {pickedDay}
+                {dayChanger(pickedDay)}
             </div>
             <div className={style.close} onClick={changeVisibility}>
             </div>

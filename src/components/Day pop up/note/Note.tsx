@@ -9,7 +9,7 @@ interface notePropsT {
 const Note: React.FC<notePropsT> = ({text, date}) => {
     const dateFormatter = (date: string) => {
         return date.split(' ').map((e, i) => {
-            if (i < 5){
+            if (i < 5 && i > 0){
                 return e
             }
         }).join(' ')

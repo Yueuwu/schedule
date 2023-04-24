@@ -4,6 +4,7 @@ import style from './day.module.css'
 import ChillDay from "../ChillDay/ChillDay";
 import {objectT, scheduleSelector, valueI} from "../../features/schedule/scheduleSlice";
 import {useAppSelector} from "../../app/hooks";
+import {dayChanger} from "../../utils/dayChanger";
 
 interface dayI extends valueI {
     showPopUp: () => void,
@@ -28,16 +29,6 @@ const Day: React.FC<dayI> = ({day, object, showPopUp, setPickedDayPopUp}) => {
         }
     }
 
-    const dayChanger = (day: valueI['day']) => {
-        switch (day) {
-            case "Monday": return "Понедельник";
-            case "Tuesday": return "Вторник";
-            case "Wednesday": return "Среда";
-            case "Thursday": return "Четверг";
-            case "Friday": return "Пятница";
-            case "Saturday": return "Суббота";
-        }
-    }
 
     return (
         <div onClick={showPopUpHandler} className={style.wrapper}>
