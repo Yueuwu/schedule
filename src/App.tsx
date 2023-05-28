@@ -36,7 +36,10 @@ const App: React.FC = () => {
                         ?
                         value.map((day: valueI, index) => <Day setPickedDayPopUp={setPickedDayPopUp} showPopUp={popupVisibility} key={index} day={day['day']} object={day['object']}/>)
                         :
-                        <div>Лоадинг</div>
+                        <div>
+                            <p>Лоадинг</p>
+                            <img style={{maxWidth: '50vmin', marginTop: '5vmin'}} src='https://get.wallhere.com/photo/illustration-long-hair-anime-anime-girls-animal-ears-fruit-apples-red-eyes-original-characters-violet-hair-mangaka-58378.jpg'/>
+                        </div>
                 }
                 {
                     showPopUp && <PopUp pickedDay={pickedDayPopUp} changeVisibility={popupVisibility} />

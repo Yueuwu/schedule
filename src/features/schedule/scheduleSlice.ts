@@ -58,6 +58,7 @@ const scheduleSlice = createSlice({
             })
             .addCase(getSchedule.fulfilled, (state, action) => {
                 state.status = 'success';
+                console.log(action.payload)
                 state.value = action.payload.sort((a: valueI, b: valueI) => {
                     let day1 = a.day
                     let day2 = b.day
