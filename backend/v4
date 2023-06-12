@@ -109,7 +109,7 @@ if __name__ == '__main__':
     request_counter = 0
     all_requests = []
 
-    url = "https://schedule.nspu.ru/group_shedule.php?id=1889"
+    url = "https://schedule.nspu.ru/group_shedule.php?id=1817"
     parse(url)
     print("\nTotal Requests = ",request_counter,"\nlinks = ", all_requests)
     app.run(debug=True)
